@@ -1,0 +1,18 @@
+{
+  "description": "Weibo21full_version 8:1:1 sensitivity grid: 3x3 lambda_relation x lambda_utility (tau=1.0) plus the tau row (lambda_relation=0.2, lambda_utility=1.0). Each setting changes only model.r1.tau / loss.lambda_relation / loss.lambda_utility of the default student config.",
+  "seeds": [200404, 200405, 200406, 200407, 200408],
+  "default": {"tau": 1.0, "lambda_relation": 0.2, "lambda_utility": 1.0},
+  "settings": [
+    {"name": "default",          "tau": 1.0, "lambda_relation": 0.2, "lambda_utility": 1.0},
+    {"name": "tau_0p5",          "tau": 0.5, "lambda_relation": 0.2, "lambda_utility": 1.0},
+    {"name": "tau_2p0",          "tau": 2.0, "lambda_relation": 0.2, "lambda_utility": 1.0},
+    {"name": "rel_0p1",          "tau": 1.0, "lambda_relation": 0.1, "lambda_utility": 1.0},
+    {"name": "rel_0p4",          "tau": 1.0, "lambda_relation": 0.4, "lambda_utility": 1.0},
+    {"name": "util_0p5",         "tau": 1.0, "lambda_relation": 0.2, "lambda_utility": 0.5},
+    {"name": "util_2p0",         "tau": 1.0, "lambda_relation": 0.2, "lambda_utility": 2.0},
+    {"name": "rel_0p1_util_0p5", "tau": 1.0, "lambda_relation": 0.1, "lambda_utility": 0.5},
+    {"name": "rel_0p1_util_2p0", "tau": 1.0, "lambda_relation": 0.1, "lambda_utility": 2.0},
+    {"name": "rel_0p4_util_0p5", "tau": 1.0, "lambda_relation": 0.4, "lambda_utility": 0.5},
+    {"name": "rel_0p4_util_2p0", "tau": 1.0, "lambda_relation": 0.4, "lambda_utility": 2.0}
+  ]
+}

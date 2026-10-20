@@ -1,0 +1,138 @@
+{
+  "dataset": {
+    "name": "weibo21",
+    "display_name": "Weibo21full_version",
+    "adapter": "dataset_tools.weibo21.prepare",
+    "schema_version": "cute_fnd_multimodal_v1",
+    "positive_label": 0,
+    "positive_class": "fake",
+    "class_names": {
+      "0": "fake",
+      "1": "real"
+    },
+    "manifest_dir": "<set by experiment/job.py at runtime>",
+    "data_version": "Weibo21full_version"
+  },
+  "seed": 200404,
+  "data": {
+    "root": "<set by experiment/job.py at runtime>",
+    "image_root": "<set by experiment/job.py at runtime>",
+    "processed_dir": "<set by experiment/job.py at runtime>",
+    "max_images": 1000,
+    "image_size": 224,
+    "image_preprocessing": {
+      "color_mode": "RGB",
+      "transparent_background": "white",
+      "train_augmentation": {
+        "enabled": true,
+        "random_crop_scale": [
+          0.9,
+          1.0
+        ],
+        "brightness": 0.08,
+        "contrast": 0.08
+      }
+    },
+    "max_text_length": 192,
+    "text_instruction": "请提取这条新闻中的事件、人物、时间、地点、因果关系、夸张表达和不确定性线索。新闻：",
+    "num_workers": 2,
+    "pin_memory": true,
+    "persistent_workers": true,
+    "prefetch_factor": 2,
+    "replay_seed": 200404,
+    "data_version": "Weibo21full_version",
+    "missing_image_policy": "availability_mask_v1"
+  },
+  "model": {
+    "architecture_version": "qwen_lora_lgled_masked_r1",
+    "text_backbone": "<set by experiment/job.py at runtime>",
+    "vision_backbone": "<set by experiment/job.py at runtime>",
+    "hidden_dim": 384,
+    "num_heads": 8,
+    "dropout": 0.2,
+    "lora_rank": 8,
+    "lora_alpha": 16,
+    "lora_dropout": 0.05,
+    "lora_target_modules": [
+      "q_proj",
+      "v_proj"
+    ],
+    "qwen_gradient_checkpointing": true,
+    "qwen_use_cache": false,
+    "qwen_dtype": "bfloat16",
+    "qwen_use_lora": true,
+    "view_dropout_probability": 0.0,
+    "freeze_vision": true,
+    "unfreeze_vision_last_n": 2,
+    "r1": {
+      "latent_judge_num_layers": 2,
+      "judge_type": "qwen_latent",
+      "visibility": "strict",
+      "use_global": true,
+      "evidential": true,
+      "explicit_relations": true,
+      "explicit_vacuity": true,
+      "head_hidden_dim": 256,
+      "tau": 1.0,
+      "fusion": "utility",
+      "allow_task_grad_into_routing": false,
+      "latent_view_dropout": 0.0,
+      "gradient_checkpointing": true
+    }
+  },
+  "train": {
+    "epochs": 30,
+    "per_gpu_batch_size": 2,
+    "grad_accum_steps": 8,
+    "vision_learning_rate": 2e-05,
+    "lora_learning_rate": 0.0001,
+    "head_learning_rate": 4e-05,
+    "weight_decay": 0.02,
+    "warmup_ratio": 0.1,
+    "label_smoothing": 0.0,
+    "gradient_clip_norm": 1.0,
+    "precision": "bf16",
+    "early_stop_patience": 8,
+    "monitor": "macro_f1",
+    "top_k_checkpoint_average": 5,
+    "threshold_min": 0.2,
+    "threshold_max": 0.8,
+    "threshold_step": 0.01,
+    "output_dir": "<set by experiment/job.py at runtime>",
+    "length_bucketing_megabucket_batches": 100,
+    "length_bucketing_view_policy": {
+      "schema": "single_view_per_epoch_v1",
+      "mode": "alternate_epoch"
+    },
+    "progress_checkpoint_steps": 20,
+    "r1_runtime_optimization": true,
+    "r1_input_runtime_optimization": true,
+    "r1_eval_runtime_optimization": true,
+    "qwen_gradient_checkpointing_override": true
+  },
+  "loss": {
+    "lambda_relation": 0.2,
+    "lambda_utility": 1.0,
+    "beta_edl": 0.01,
+    "edl_warmup_epochs": 3,
+    "utility_target": "shapley",
+    "epsilon": 1e-07
+  },
+  "protocol": "r1_replay_pool_v1",
+  "reference": {
+    "folds": 3,
+    "epochs": 3,
+    "patience": 2,
+    "width": 256,
+    "prior_smoothing": 1.0,
+    "temperature_grid": [
+      0.5,
+      1.0,
+      2.0,
+      4.0
+    ],
+    "initialization": "pretrained_only",
+    "label_smoothing": 0.0,
+    "class_weight": null
+  }
+}
