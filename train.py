@@ -104,7 +104,12 @@ def check_data(data):
                     bad.append(str(image))
                 checked += 1
     if bad:
-        raise SystemExit(f'{len(bad)} images missing or changed, e.g. {bad[:3]}')
+        hint = ''
+        if any(';' in Path(item).name for item in bad):
+            hint = ("\nSome image names end with ';690'. The default unzip strips ';N' as a VMS version number; "
+                    "re-extract with `unzip -V Weibo21full_version.zip -d <dir>` "
+                    "or `python -m zipfile -e Weibo21full_version.zip <dir>`.")
+        raise SystemExit(f'{len(bad)} images missing or changed, e.g. {bad[:3]}{hint}')
     print(f'[data] split files and {checked} images verified', flush=True)
 
 

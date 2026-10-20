@@ -86,9 +86,11 @@ zip 的 sha256 为 `0d2d1d409ef0e67bb7a626fefc18bbb4bd4aa91de2169fc01761b9d3ae23
 解压后把目录路径传给 `--data`：
 
 ```bash
-unzip Weibo21full_version.zip -d /path/to/data
+unzip -V Weibo21full_version.zip -d /path/to/data
 python train.py --data /path/to/data/Weibo21full_version
 ```
+
+> **注意：解压时必须加 `-V`。** 有 3 张图片的文件名以 `;690` 结尾（如 `fake_release_all_picture/0062Eubjgy6SmjdJMBH69&amp;amp;690`）。`unzip` 默认会把 `;数字` 当作 VMS 版本号删掉，导致文件名被截断、开跑前的图片校验失败。也可以用 Python 自带的解压：`python -m zipfile -e Weibo21full_version.zip /path/to/data`。
 
 解压后的目录结构：
 
@@ -192,6 +194,7 @@ outputs/
 ## 10. 常见问题
 
 - **`... differs from the published 8:1:1 split` 或图片哈希不一致**：`--data` 没有指向解压后的 `Weibo21full_version` 目录，或者数据文件被改动过。重新解压 zip 即可。
+- **`3 images missing or changed`，文件名以 `&amp;amp` 结尾**：解压时没有加 `-V`，以 `;690` 结尾的文件名被 `unzip` 截断。删除解压目录后，用 `unzip -V Weibo21full_version.zip -d /path/to/data` 重新解压。
 - **`reference of seed ... is not complete`**：该种子的 reference 还没训完，或者训练失败，请查看 `outputs/logs/reference_seed<S>.reference.log`。
 - **TEST 中途失败后不自动重测**：这是有意设计，防止反复读取测试集。请人工检查原因后，删除对应的 `evaluation/final/test/test_started.json` 再重跑。
 - **显存不足**：把 `--procs-per-gpu` 调小。
