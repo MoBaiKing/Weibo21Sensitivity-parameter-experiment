@@ -79,7 +79,11 @@ bash scripts/download_models.sh
 
 ## 5. 数据集
 
-数据集单独提供：`Weibo21full_version.zip`（1.5 GB，已清洗，可直接运行）。解压后把目录路径传给 `--data`：
+数据集单独提供：`Weibo21full_version.zip`（1.5 GB，9600 个文件，已清洗，可直接运行）。
+
+zip 的 sha256 为 `0d2d1d409ef0e67bb7a626fefc18bbb4bd4aa91de2169fc01761b9d3ae23d861`，下载后可以用 `sha256sum Weibo21full_version.zip` 核对。
+
+解压后把目录路径传给 `--data`：
 
 ```bash
 unzip Weibo21full_version.zip -d /path/to/data
